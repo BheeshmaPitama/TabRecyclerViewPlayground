@@ -74,7 +74,8 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
 
     private fun updateRecyclerView(list: List<FilterItem>) {
         adapter.submitList(list)
-        adapter.notifyItemInserted(list.size)
+        adapter.notifyItemRangeRemoved(0,list.size)
+        adapter.notifyItemRangeInserted(0,list.size)
     }
 
     private fun setupRecyclerView() {
