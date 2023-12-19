@@ -127,6 +127,14 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
     }
 
     private fun setupActionButtons() {
+        binding.resetButton.setOnClickListener {
+            imageQualityList.forEach { it.isSelected = false }
+            beautyFiltersList.forEach { it.isSelected = false }
+            adapter.notifyDataSetChanged()
+        }
+
+        binding.applyButton.setOnClickListener {
+        }
     }
 
 }
