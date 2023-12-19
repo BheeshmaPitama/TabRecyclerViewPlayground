@@ -67,14 +67,22 @@ class FilterAdapter(private val onItemClicked: (FilterItem) -> Unit) :
         }
 
         private fun bindUnselectedState() {
-            binding.filterImage.foreground = null
+            binding.apply {
+                filterImage.foreground = null
+                context?.let {
+                    filterText.setTextColor(ContextCompat.getColor(it,R.color.white))
+                }
+            }
         }
 
         private fun bindSelectedState() {
+            binding.apply {
+                context?.let {
+                    filterImage.foreground =
+                        ContextCompat.getDrawable(it, R.drawable.filter_selected)
 
-            context?.let {
-                binding.filterImage.foreground =
-                    ContextCompat.getDrawable(it,R.drawable.filter_selected)
+                    filterText.setTextColor(ContextCompat.getColor(it,R.color.selected_yellow))
+                }
             }
         }
     }

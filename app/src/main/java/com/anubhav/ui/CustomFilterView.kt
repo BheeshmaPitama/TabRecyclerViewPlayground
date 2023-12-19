@@ -4,7 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.anubhav.populate.loadFilters
+import com.anubhav.populate.loadBeautyFilters
+import com.anubhav.populate.loadQualityFilters
 import com.anubhav.tabrecyclerviewplayground.R
 import com.anubhav.tabrecyclerviewplayground.databinding.NewFiltersUiLayoutBinding
 import com.google.android.material.tabs.TabLayout
@@ -13,8 +14,8 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
 
     private val binding by lazy { NewFiltersUiLayoutBinding.inflate(LayoutInflater.from(context), this, true) }
 
-    private val imageQualityList = mutableListOf<FilterItem>().also { it.addAll(loadFilters()) }
-    private val beautyFiltersList = mutableListOf<FilterItem>()
+    private val imageQualityList = mutableListOf<FilterItem>().also { it.addAll(loadQualityFilters()) }
+    private val beautyFiltersList = mutableListOf<FilterItem>().also { it.addAll(loadBeautyFilters()) }
     private val maskList = mutableListOf<FilterItem>()
     private val backgroundList = mutableListOf<FilterItem>()
     private val adapter = FilterAdapter{}
