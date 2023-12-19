@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TabRecyclerViewPlayground</string>
+    <string name="image_quality">Image Quality</string>
+    <string name="beauty_filters">Beauty Filters</string>
+    <string name="mask">Mask</string>
+    <string name="background">Background</string>
+</resources>
