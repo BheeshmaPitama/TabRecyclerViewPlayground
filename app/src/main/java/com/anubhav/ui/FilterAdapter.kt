@@ -31,6 +31,7 @@ class FilterAdapter(private val onItemClicked: (FilterItem) -> Unit) :
 
     private fun onItemSelected(item: FilterItem) {
         val previousSelected = selectedItem
+        item.isSelected = true
         selectedItem = item
         previousSelected?.let { notifyItemChanged(currentList.indexOf(it)) }
         notifyItemChanged(currentList.indexOf(item))

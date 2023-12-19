@@ -18,7 +18,14 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
     private val beautyFiltersList = mutableListOf<FilterItem>().also { it.addAll(loadBeautyFilters()) }
     private val maskList = mutableListOf<FilterItem>()
     private val backgroundList = mutableListOf<FilterItem>()
+
+    private val lastSelectedImageQualityStateList = mutableListOf<FilterItem>()
+    private val lastSelectedBeautyFiltersStateList = mutableListOf<FilterItem>()
+    private val lastSelectedMaskListStateList = mutableListOf<FilterItem>()
+    private val lastSelectedBackgroundListStateList = mutableListOf<FilterItem>()
+
     private val adapter = FilterAdapter{}
+    private var lastSelectedCategory : FilterCategories = FilterCategories.ImageQuality
 
     companion object {
         const val TAB_IMAGE_QUALITY = "TAB_IMAGE_QUALITY"
@@ -55,11 +62,28 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
 
                     tab.view.alpha = 1f
 
+                    updateLastSelectedCategory()
+
                     when (tab.tag) {
-                        TAB_IMAGE_QUALITY -> updateRecyclerView(imageQualityList)
-                        TAB_BEAUTY_FILTERS -> updateRecyclerView(beautyFiltersList)
-                        TAB_MASK -> updateRecyclerView(maskList)
-                        TAB_BACKGROUND -> updateRecyclerView(backgroundList)
+                        TAB_IMAGE_QUALITY -> {
+                            updateRecyclerView(imageQualityList)
+                            lastSelectedCategory = FilterCategories.ImageQuality
+                        }
+
+                        TAB_BEAUTY_FILTERS -> {
+                            updateRecyclerView(beautyFiltersList)
+                            lastSelectedCategory = FilterCategories.BeautyFilters
+                        }
+
+                        TAB_MASK -> {
+                            updateRecyclerView(maskList)
+                            lastSelectedCategory = FilterCategories.Mask
+                        }
+
+                        TAB_BACKGROUND -> {
+                            updateRecyclerView(backgroundList)
+                            lastSelectedCategory = FilterCategories.Background
+                        }
                     }
                 }
 
@@ -70,6 +94,23 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
                 override fun onTabReselected(tab: TabLayout.Tab) {}
             })
 
+        }
+    }
+
+    private fun updateLastSelectedCategory() {
+        when(lastSelectedCategory){
+            FilterCategories.ImageQuality -> {
+                lastSelectedImageQualityStateList.addAll(adapter.currentList)
+                imageQualityList.clear()
+                imageQualityList.addAll(lastSelectedImageQualityStateList)
+            }
+            FilterCategories.BeautyFilters -> {
+                lastSelectedBeautyFiltersStateList.addAll(adapter.currentList)
+                beautyFiltersList.clear()
+                beautyFiltersList.addAll(lastSelectedBeautyFiltersStateList)
+            }
+            FilterCategories.Background -> {}
+            FilterCategories.Mask -> {}
         }
     }
 
@@ -85,4 +126,13 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
 
     private fun setupActionButtons() {
     }
+
+}
+
+sealed class FilterCategories{
+    data object ImageQuality : FilterCategories()
+    data object BeautyFilters : FilterCategories()
+    data object Mask : FilterCategories()
+    data object Background : FilterCategories()
+
 }
