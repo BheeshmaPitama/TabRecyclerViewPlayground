@@ -14,27 +14,23 @@ import com.anubhav.tabrecyclerviewplayground.databinding.FilterItemBinding
 class FilterAdapter(private val onItemClicked: (FilterItem) -> Unit) :
     ListAdapter<FilterItem, FilterAdapter.FilterViewHolder>(FilterDiffCallback) {
 
-    private var selectedItem: FilterItem? = null
     var context: Context? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
         val binding = FilterItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FilterViewHolder(binding, onItemClicked,::onItemSelected)
+        return FilterViewHolder(binding, onItemClicked, ::onItemSelected)
     }
 
     override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
         context = holder.itemView.context
         val filterItem = getItem(position)
-        val isSelected = filterItem == selectedItem
-        holder.bind(filterItem, isSelected)
+        holder.bind(filterItem)
     }
 
     private fun onItemSelected(item: FilterItem) {
-        val previousSelected = selectedItem
+        currentList.forEach { it.isSelected = false }
         item.isSelected = true
-        selectedItem = item
-        previousSelected?.let { notifyItemChanged(currentList.indexOf(it)) }
-        notifyItemChanged(currentList.indexOf(item))
+        notifyDataSetChanged()
     }
 
     inner class FilterViewHolder(
@@ -53,14 +49,14 @@ class FilterAdapter(private val onItemClicked: (FilterItem) -> Unit) :
             }
         }
 
-        fun bind(filterItem: FilterItem, isSelected: Boolean) {
+        fun bind(filterItem: FilterItem) {
             currentFilterItem = filterItem
             with(binding) {
                 filterText.text = filterItem.title
                 filterImage.loadWithGlide(filterItem.imagePath)
             }
 
-            if (isSelected) {
+            if (filterItem.isSelected) {
                 bindSelectedState()
             } else {
                 bindUnselectedState()
@@ -71,7 +67,7 @@ class FilterAdapter(private val onItemClicked: (FilterItem) -> Unit) :
             binding.apply {
                 filterImage.foreground = null
                 context?.let {
-                    filterText.setTextColor(ContextCompat.getColor(it,R.color.white))
+                    filterText.setTextColor(ContextCompat.getColor(it, R.color.white))
                 }
             }
         }
@@ -82,7 +78,7 @@ class FilterAdapter(private val onItemClicked: (FilterItem) -> Unit) :
                     filterImage.foreground =
                         ContextCompat.getDrawable(it, R.drawable.filter_selected)
 
-                    filterText.setTextColor(ContextCompat.getColor(it,R.color.selected_yellow))
+                    filterText.setTextColor(ContextCompat.getColor(it, R.color.selected_yellow))
                 }
             }
         }
@@ -98,3 +94,4 @@ class FilterAdapter(private val onItemClicked: (FilterItem) -> Unit) :
         }
     }
 }
+

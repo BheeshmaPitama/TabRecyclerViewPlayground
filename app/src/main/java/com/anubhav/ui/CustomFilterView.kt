@@ -100,11 +100,13 @@ class CustomFilterView(context: Context, attrs: AttributeSet) : ConstraintLayout
     private fun updateLastSelectedCategory() {
         when(lastSelectedCategory){
             FilterCategories.ImageQuality -> {
+                lastSelectedImageQualityStateList.clear()
                 lastSelectedImageQualityStateList.addAll(adapter.currentList)
                 imageQualityList.clear()
                 imageQualityList.addAll(lastSelectedImageQualityStateList)
             }
             FilterCategories.BeautyFilters -> {
+                lastSelectedBeautyFiltersStateList.clear()
                 lastSelectedBeautyFiltersStateList.addAll(adapter.currentList)
                 beautyFiltersList.clear()
                 beautyFiltersList.addAll(lastSelectedBeautyFiltersStateList)
